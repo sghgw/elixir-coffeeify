@@ -8,11 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/vinnizworld/elixir-coffeeify.git"
+    "url": "https://github.com/sghgw/elixir-coffeeify.git"
   },
   "dependencies": {
     "browserify": "^11.2.0",
     "coffeeify": "^1.1.0",
+    "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   },
   "keywords": [
@@ -28,7 +29,7 @@
   "author": "Vinay Aggarwal",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/vinnizworld/elixir-coffeeify/issues"
+    "url": "https://github.com/sghgw/elixir-coffeeify/issues"
   },
-  "homepage": "https://github.com/vinnizworld/elixir-coffeeify#readme"
+  "homepage": "https://github.com/sghgw/elixir-coffeeify#readme"
 }
