@@ -1,13 +1,15 @@
 var Elixir 		= require('laravel-elixir');
 var config 		= Elixir.config;
+var $ 				= Elixir.Plugins;
 var browserify 	= require('browserify');
 var gulp 		= require('gulp');
 var source     	= require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 var path 		= require('path');
 var coffeeify	= require('coffeeify');
 
 /*
- * This task run the given coffee files through browserify 
+ * This task run the given coffee files through browserify
  * using the coffeeify transformation
  */
 Elixir.extend('coffeeify', function(src, output, options){
@@ -23,7 +25,7 @@ Elixir.extend('coffeeify', function(src, output, options){
 		}
 
 		function make(file){
-				var outputFile = path.basename(file).replace('.coffee','.js');
+				var outputFile = path.basename(paths.output.path);
 				return browserify(file, {
 					extensions : ['.coffee']
 				})
@@ -34,6 +36,10 @@ Elixir.extend('coffeeify', function(src, output, options){
 					this.emit('end');
 				})
 				.pipe(source(outputFile))
+				.pipe(buffer())
+				.pipe($.if(config.sourcemaps, $.sourcemaps.init()))
+				.pipe($.if(config.production, $.uglify()))
+				.pipe($.if(config.sourcemaps, $.sourcemaps.write('.')))
 				.pipe(gulp.dest(config.get('public.js.outputFolder')))
 				.pipe(new Elixir.Notification('CoffeeScript Compiled!'))
 		}
@@ -42,7 +48,7 @@ Elixir.extend('coffeeify', function(src, output, options){
 	})
 
 	// Watch out!
-	.watch(config.get('assets.js.folder') + '/**/*.coffee');
+	.watch(config.get('assets.js.coffee.folder') + '/**/*.coffee');
 
 });
 
@@ -56,6 +62,6 @@ Elixir.extend('coffeeify', function(src, output, options){
  */
 var prepGulpPaths = function(src, output) {
 	return new Elixir.GulpPaths()
-		.src(src, config.get('assets.js.folder'))
+		.src(src, config.get('assets.js.coffee.folder'))
 		.output(output || config.get('public.js.outputFolder'), 'app.js');
 };
